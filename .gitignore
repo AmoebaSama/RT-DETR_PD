@@ -2,28 +2,20 @@
 .vscode/
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
 
-# Local build and packaged outputs
-build/
-dist/
-deploy/RTDETR_Solder_GUI_Portable/
-
-# Training outputs and cached predictions
-rtdetr/runs/
-runs/
-
-# Large local datasets
+# Large local datasets stay out of the repo.
 YOLO/
 SolDef_AI/
 captured_macro_dataset/
+merged_datasets/
+yolo26n.pt
 
-# Model weights and exported artifacts
-*.pt
-*.pth
-*.onnx
-*.engine
-
-# Notebook checkpoints
-.ipynb_checkpoints/
+# Generated outputs stay out, except the deployed RT-DETR checkpoint.
+runs/
+build/
+dist/
+deploy/RTDETR_Solder_GUI_Portable/
+rtdetr/runs/**
+!rtdetr/runs/solder_defects_rtdetr/
+!rtdetr/runs/solder_defects_rtdetr/weights/
+!rtdetr/runs/solder_defects_rtdetr/weights/best.pt
