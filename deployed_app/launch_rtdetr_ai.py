@@ -7,7 +7,11 @@ from pathlib import Path
 
 
 APP_ROOT = Path(__file__).resolve().parent.parent
-ENVIRONMENT_CHECK = "import cv2, numpy, torch, fastapi, uvicorn; from PIL import Image"
+ENVIRONMENT_CHECK = (
+    "import cv2, jinja2, multipart, numpy, torch, ultralytics, uvicorn; "
+    "from PIL import Image; "
+    "from fastapi import FastAPI"
+)
 
 
 def python_candidates() -> list[Path]:

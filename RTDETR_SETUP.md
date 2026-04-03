@@ -178,6 +178,38 @@ If you want the notebook to use this environment, register it as a Jupyter kerne
 .\.venv\Scripts\python.exe -m ipykernel install --user --name rtdetr-solder --display-name "Python (RT-DETR Solder)"
 ```
 
+## Raspberry Pi 5 Web App Setup
+
+For Raspberry Pi 5 or other Linux ARM devices, use the included setup script instead of the Windows-specific commands above:
+
+```bash
+cd /path/to/RT-DETR
+chmod +x scripts/setup_raspberry_pi.sh
+./scripts/setup_raspberry_pi.sh
+```
+
+Then launch the web app with:
+
+```bash
+cd /path/to/RT-DETR
+source .venv/bin/activate
+export RTDETR_HOST=0.0.0.0
+export RTDETR_OPEN_BROWSER=0
+python deployed_app/launch_rtdetr_ai.py
+```
+
+Open the app from a browser using the Raspberry Pi IP address:
+
+```text
+http://<raspberry-pi-ip>:8000
+```
+
+Important: the repository does not include the trained `best.pt` weights by default. Copy your trained weights to:
+
+```text
+rtdetr/runs/solder_defects_rtdetr/weights/best.pt
+```
+
 ## Train
 
 Train the 4-class solder defect model:
