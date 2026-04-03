@@ -35,6 +35,10 @@ FONT_CANDIDATES = [
     Path("C:/Windows/Fonts/arial.ttf"),
     Path("C:/Windows/Fonts/segoeuib.ttf"),
     Path("C:/Windows/Fonts/segoeui.ttf"),
+    Path("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"),
+    Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+    Path("/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf"),
+    Path("/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf"),
 ]
 
 

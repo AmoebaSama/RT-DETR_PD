@@ -12,9 +12,9 @@ from pathlib import Path
 import uvicorn
 
 
-HOST = "127.0.0.1"
-PORT = 8000
-APP_URL = f"http://{HOST}:{PORT}"
+BIND_HOST = os.environ.get("RTDETR_HOST", "127.0.0.1")
+PORT = int(os.environ.get("RTDETR_PORT", "8000"))
+HEALTHCHECK_URL = f"http://127.0.0.1:{PORT}"
 
 
 def _runtime_root() -> Path:
@@ -26,6 +26,28 @@ def _runtime_root() -> Path:
 os.environ.setdefault("RTDETR_ROOT", str(_runtime_root()))
 
 from rtdetr.web.app import app
+
+
+def _display_urls() -> list[str]:
+    urls = [f"http://127.0.0.1:{PORT}"]
+    if BIND_HOST not in {"127.0.0.1", "localhost"}:
+        try:
+            lan_ip = socket.gethostbyname(socket.gethostname())
+        except OSError:
+            lan_ip = None
+        if lan_ip and not lan_ip.startswith("127."):
+            urls.append(f"http://{lan_ip}:{PORT}")
+    return urls
+
+
+def _maybe_open_browser(url: str) -> None:
+    should_open = os.environ.get("RTDETR_OPEN_BROWSER", "1").lower() not in {"0", "false", "no"}
+    if not should_open:
+        return
+    try:
+        webbrowser.open(url)
+    except Exception:
+        pass
 
 
 def _is_port_open(host: str, port: int) -> bool:
@@ -52,24 +74,27 @@ def _wait_for_server(url: str, timeout_seconds: float = 45.0) -> bool:
 
 
 def main() -> int:
-    if _is_port_open(HOST, PORT) and _healthcheck(APP_URL):
-        webbrowser.open(APP_URL)
+    if _is_port_open("127.0.0.1", PORT) and _healthcheck(HEALTHCHECK_URL):
+        _maybe_open_browser(HEALTHCHECK_URL)
         return 0
 
-    config = uvicorn.Config(app=app, host=HOST, port=PORT, log_level="warning")
+    config = uvicorn.Config(app=app, host=BIND_HOST, port=PORT, log_level="warning")
     server = uvicorn.Server(config)
     server_thread = threading.Thread(target=server.run, daemon=True)
     server_thread.start()
 
-    if not _wait_for_server(APP_URL):
+    if not _wait_for_server(HEALTHCHECK_URL):
         print("RT-DETR GUI failed to start.")
         server.should_exit = True
         server_thread.join(timeout=5)
         return 1
 
-    print(f"RT-DETR GUI is running at {APP_URL}")
+    urls = _display_urls()
+    print("RT-DETR GUI is running at:")
+    for url in urls:
+        print(url)
     print("Close this window to stop the local server.")
-    webbrowser.open(APP_URL)
+    _maybe_open_browser(urls[0])
 
     try:
         while server_thread.is_alive():
