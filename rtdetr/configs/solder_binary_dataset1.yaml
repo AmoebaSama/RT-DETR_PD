@@ -1,0 +1,7 @@
+path: ../../YOLO/dataset1
+train: images/train
+val: images/val
+
+names:
+  0: good
+  1: no_good

@@ -1,0 +1,85 @@
+{
+  "dataset": {
+    "train_images": 312,
+    "val_images": 217,
+    "total_images": 529,
+    "train_instances": {
+      "good": 186,
+      "exc_solder": 182,
+      "spike": 130,
+      "poor_solder": 57
+    },
+    "val_instances": {
+      "good": 125,
+      "exc_solder": 133,
+      "spike": 101,
+      "poor_solder": 34
+    },
+    "total_instances": {
+      "good": 311,
+      "exc_solder": 315,
+      "spike": 231,
+      "poor_solder": 91
+    },
+    "smallest_class": "poor_solder",
+    "smallest_class_count": 91,
+    "largest_class": "exc_solder",
+    "largest_class_count": 315,
+    "imbalance_ratio": 3.4615384615384617,
+    "input_resolution": "640 x 640",
+    "classes": [
+      "Good Solder",
+      "Excess Solder",
+      "Insufficient Solder",
+      "Solder Spike"
+    ]
+  },
+  "performance": {
+    "precision": 0.9263780438404575,
+    "recall": 0.9593864749751905,
+    "map50": 0.9749574799277838,
+    "map50_95": 0.8780956076242197,
+    "weakest_class": "spike",
+    "weakest_class_map50_95": 0.80961,
+    "class_map50_95": {
+      "good": 0.93612,
+      "exc_solder": 0.94187,
+      "poor_solder": 0.82478,
+      "spike": 0.80961
+    }
+  },
+  "latency": {
+    "samples": 50,
+    "wall_mean_ms": 418.44767400762066,
+    "wall_std_ms": 40.29160827993928,
+    "preprocess_mean_ms": 2.47919799759984,
+    "inference_mean_ms": 409.8810420045629,
+    "inference_std_ms": 13.017611691651396,
+    "postprocess_mean_ms": 0.635277999099344,
+    "derived_end_to_end_ms": 412.9955180012621
+  },
+  "training": {
+    "total_epochs": 69,
+    "final_precision": 0.92536,
+    "final_recall": 0.95876,
+    "final_map50": 0.97499,
+    "final_map50_95": 0.87823,
+    "best_map50_epoch": 68,
+    "best_map50": 0.9875,
+    "best_map50_95_epoch": 69,
+    "best_map50_95": 0.87823,
+    "training_time_seconds": 4542.51
+  },
+  "data_dependency": {
+    "smallest_class": "poor_solder",
+    "smallest_class_count": 91,
+    "imbalance_ratio": 3.4615384615384617,
+    "weakest_class": "spike",
+    "weakest_class_map50_95": 0.80961
+  },
+  "copied_validation_figures": [
+    "rtdetr_confusion_matrix_normalized.png",
+    "rtdetr_BoxPR_curve.png",
+    "rtdetr_BoxF1_curve.png"
+  ]
+}

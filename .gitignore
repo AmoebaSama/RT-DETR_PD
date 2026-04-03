@@ -1,0 +1,29 @@
+.venv/
+.vscode/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Local build and packaged outputs
+build/
+dist/
+deploy/RTDETR_Solder_GUI_Portable/
+
+# Training outputs and cached predictions
+rtdetr/runs/
+runs/
+
+# Large local datasets
+YOLO/
+SolDef_AI/
+captured_macro_dataset/
+
+# Model weights and exported artifacts
+*.pt
+*.pth
+*.onnx
+*.engine
+
+# Notebook checkpoints
+.ipynb_checkpoints/

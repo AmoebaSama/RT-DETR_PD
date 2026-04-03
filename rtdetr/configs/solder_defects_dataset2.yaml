@@ -1,0 +1,9 @@
+path: ../../YOLO/dataset2
+train: images/train
+val: images/val
+
+names:
+  0: good
+  1: exc_solder
+  2: poor_solder
+  3: spike

@@ -1,0 +1,7 @@
+train: C:/Users/Mong/Desktop/Eden/RT-DETR/YOLO/dataset2/images/train
+val: C:/Users/Mong/Desktop/Eden/RT-DETR/YOLO/dataset2/images/val
+names:
+  0: good
+  1: exc_solder
+  2: poor_solder
+  3: spike

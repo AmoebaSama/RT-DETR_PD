@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RT-DETR Solder Defect GUI</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}?v={{ asset_version }}">
+</head>
+<body>
+    <main class="shell">
+        <section class="workspace">
+            <section class="card panel">
+                <div class="panel-head">
+                    <h2>Live Camera Inspection</h2>
+                    <p>The app detects the board region first, then analyzes solder defects inside that PCB area on each live frame.</p>
+                </div>
+                <form id="inspection-settings" class="form-grid">
+                    <label class="field">
+                        <span>Image Size</span>
+                        <input id="imgsz-input" type="number" name="imgsz" min="320" max="1280" step="32" value="{{ defaults.imgsz }}">
+                    </label>
+
+                    <label class="field">
+                        <span>Confidence</span>
+                        <input id="conf-input" type="number" name="conf" min="0.01" max="0.99" step="0.01" value="{{ defaults.conf }}">
+                    </label>
+
+                    <label class="field">
+                        <span>IoU</span>
+                        <input id="iou-input" type="number" name="iou" min="0.10" max="0.95" step="0.01" value="{{ defaults.iou }}">
+                    </label>
+                </form>
+
+                <section class="upload-card">
+                    <div class="panel-head compact">
+                        <h2>Upload Inspection</h2>
+                        <p>Upload a saved PCB image instead of using the live camera.</p>
+                    </div>
+                    <label class="field field-file">
+                        <span>Image File</span>
+                        <input id="upload-input" type="file" accept="image/*">
+                    </label>
+                    <div class="camera-actions upload-actions">
+                        <button id="analyze-upload" type="button" class="action">Analyze Upload</button>
+                        <button id="clear-upload" type="button" class="secondary-action muted-action">Clear</button>
+                    </div>
+                    <div id="upload-status" class="live-status">No file selected</div>
+                </section>
+
+                <section class="camera-card">
+                    <div class="panel-head compact">
+                        <h2>Webcam Feed</h2>
+                        <p>Use the browser camera on localhost and inspect the PCB in the main panel.</p>
+                    </div>
+                    <canvas id="webcam-canvas" hidden></canvas>
+                    <div class="camera-actions">
+                        <button id="start-camera" type="button" class="action">Start Camera</button>
+                        <button id="start-live" type="button" class="secondary-action" disabled>Start Live Analysis</button>
+                        <button id="pause-live" type="button" class="secondary-action muted-action" disabled>Pause</button>
+                        <button id="snapshot-frame" type="button" class="secondary-action" disabled>Analyze One Frame</button>
+                        <button id="stop-camera" type="button" class="secondary-action muted-action" disabled>Stop Camera</button>
+                    </div>
+                    <div id="live-status" class="live-status">Camera idle</div>
+                </section>
+
+                {% if error %}
+                <div id="error-banner" class="notice error">
+                    <strong>Prediction failed.</strong>
+                    <span id="error-text">{{ error }}</span>
+                </div>
+                {% else %}
+                <div id="error-banner" class="notice error hidden">
+                    <strong>Prediction failed.</strong>
+                    <span id="error-text"></span>
+                </div>
+                {% endif %}
+            </section>
+
+            <section id="results-root" class="card panel results-panel">
+                <div class="panel-head">
+                    <h2>Results</h2>
+                    <p>The GUI outlines the PCB region first, then marks every detected solder issue returned by the model.</p>
+                </div>
+                <div class="status-row">
+                    <div id="status-chip" class="status-chip no_detection">idle</div>
+                    <div id="meta-block" class="meta-block">
+                        <span>Waiting for camera</span>
+                    </div>
+                </div>
+
+                <div class="image-frame live-stage" id="live-stage">
+                    <video id="webcam-video" autoplay playsinline muted></video>
+                    <canvas id="live-overlay"></canvas>
+                    <img id="analysis-image" alt="Annotated prediction result" class="hidden">
+                    <div id="preview-badge" class="preview-badge hidden">Selected upload preview</div>
+                    <div id="stage-placeholder" class="camera-placeholder">
+                        Start the camera and begin live analysis to show the webcam and bounding boxes here.
+                    </div>
+                </div>
+
+                <div class="summary-grid">
+                    <article class="summary-card">
+                        <h3>Board Region</h3>
+                        <div id="board-region-content">
+                            <p class="muted">No clear board boundary has been isolated yet.</p>
+                        </div>
+                    </article>
+
+                    <article class="summary-card">
+                        <h3>Class Counts</h3>
+                        <div id="class-counts-content">
+                            <p class="muted">No detections yet. Lock a PCB first.</p>
+                        </div>
+                    </article>
+
+                    <article class="summary-card">
+                        <h3>Detection Details</h3>
+                        <div id="detection-details-content">
+                            <p class="muted">Detection details will appear after the frozen-frame analysis.</p>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </section>
+    </main>
+    <script src="{{ url_for('static', path='app.js') }}?v={{ asset_version }}"></script>
+</body>
+</html>
